@@ -65,15 +65,15 @@ button {
 
 <div class="chat" id="chat">
 
-  <div class="msg left">🧺 阿嬤：旅人，你終於來了…</div>
-  <div class="msg left">🐱 赤靈：這個地方的記憶正在消失。</div>
+  <div class="msg left">🧺 阿嬤：旅人，你終於來了。這條溪，以前有很多故事…</div>
+  <div class="msg left">🐱 赤靈：這個地方的記憶正在消失。旅人，你能幫忙找找阿嬤的老物件，幫助阿嬤找回回憶嗎?</div>
   <div class="msg left">📜 旁白：時光寶盒正在啟動。</div>
 
 </div>
 
 <div class="options">
-  <button onclick="choose(1)">幫忙找茶壺</button>
-  <button onclick="choose(2)">先聽故事</button>
+  <button onclick="choose(1)">我願意幫忙找回</button>
+  <button onclick="choose(2)">我想先聽耆老說故事</button>
 </div>
 
 <script>
@@ -88,18 +88,18 @@ function addMsg(side, text){
 function choose(option){
 
   if(option === 1){
-    addMsg("right", "我幫你找！");
+    addMsg("right", "我願意幫忙找回");
     
     setTimeout(() => {
-      addMsg("left", "🐱 赤靈：很好，我感覺到茶壺在舊倉庫。");
+      addMsg("left", "🐱 赤靈：很好，那我們出發吧。");
     }, 600);
   }
 
   if(option === 2){
-    addMsg("right", "我想先聽故事");
+    addMsg("right", "我想先聽耆老說故事");
     
     setTimeout(() => {
-      addMsg("left", "🧺 阿嬤：那個茶壺，是我年輕時的回憶…");
+      addMsg("left", "🧺 阿嬤：從前從前......");
     }, 600);
   }
 
