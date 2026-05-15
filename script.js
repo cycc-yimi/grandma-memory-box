@@ -92,6 +92,7 @@ let state = loadState();
 let currentLevel = getFirstPlayableLevel();
 let answeredCorrectly = false;
 let hasStarted = false;
+let arStream = null;
 
 const pointsEl = document.querySelector("#points");
 const totalPointsEl = document.querySelector("#totalPoints");
@@ -286,6 +287,7 @@ function renderGuardian() {
         <span class="guardian-label">走讀守護靈</span>
         <h2>${guardian.name}</h2>
         <p>${guardian.message}</p>
+        <button class="secondary-btn ar-button" type="button" onclick="openArExperience()">召喚赤靈</button>
       </div>
     </section>
   `;
@@ -319,6 +321,71 @@ function renderImage(src, alt) {
   }
 
   return `<img class="level-image" src="${src}" alt="${alt || ""}" />`;
+}
+
+function ensureArOverlay() {
+  if (document.querySelector("#arOverlay")) {
+    return;
+  }
+
+  document.body.insertAdjacentHTML(
+    "beforeend",
+    `
+      <section class="ar-overlay" id="arOverlay" aria-hidden="true">
+        <div class="ar-stage">
+          <video class="ar-video" id="arVideo" autoplay playsinline muted></video>
+          <img class="ar-guardian" src="${guardian.image}" alt="${guardian.name}" />
+          <div class="ar-hud">
+            <strong>${guardian.name} 已出現</strong>
+            <span>移動手機，讓赤靈陪你一起走讀。</span>
+          </div>
+          <button class="ar-close" id="arCloseButton" type="button">關閉</button>
+        </div>
+      </section>
+    `
+  );
+
+  document.querySelector("#arCloseButton").addEventListener("click", closeArExperience);
+}
+
+async function openArExperience() {
+  ensureArOverlay();
+  const overlay = document.querySelector("#arOverlay");
+  const video = document.querySelector("#arVideo");
+
+  overlay.classList.add("active");
+  overlay.setAttribute("aria-hidden", "false");
+
+  try {
+    arStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { ideal: "environment" } },
+      audio: false
+    });
+    video.srcObject = arStream;
+  } catch {
+    overlay.classList.add("ar-error");
+    document.querySelector(".ar-hud span").textContent =
+      "相機沒有成功開啟。請確認使用 HTTPS 網址，並允許瀏覽器使用相機。";
+  }
+}
+
+function closeArExperience() {
+  const overlay = document.querySelector("#arOverlay");
+  const video = document.querySelector("#arVideo");
+
+  if (arStream) {
+    arStream.getTracks().forEach((track) => track.stop());
+    arStream = null;
+  }
+
+  if (video) {
+    video.srcObject = null;
+  }
+
+  if (overlay) {
+    overlay.classList.remove("active", "ar-error");
+    overlay.setAttribute("aria-hidden", "true");
+  }
 }
 
 function checkAnswer(selectedIndex, selectedButton) {
