@@ -84,7 +84,7 @@ const POINTS_PER_LEVEL = 2;
 const totalPoints = levels.length * POINTS_PER_LEVEL;
 const guardian = {
   name: "赤靈",
-  image: "images/Chiling.png",
+  image: "images/Chiling-transparent.png",
   message: "跟著我走進赤蘭溪的故事。先找到地圖上的地點，再完成這一關的小挑戰吧！"
 };
 

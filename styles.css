@@ -259,7 +259,7 @@ h1 {
   width: 88px;
   height: 88px;
   border-radius: 50%;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.45);
   object-fit: contain;
 }
 
