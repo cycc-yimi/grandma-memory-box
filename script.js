@@ -352,9 +352,23 @@ async function openArExperience() {
   ensureArOverlay();
   const overlay = document.querySelector("#arOverlay");
   const video = document.querySelector("#arVideo");
+  const hint = document.querySelector(".ar-hud span");
 
   overlay.classList.add("active");
   overlay.setAttribute("aria-hidden", "false");
+  overlay.classList.remove("ar-error");
+
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    overlay.classList.add("ar-error");
+    hint.textContent = "這個瀏覽器不支援直接開啟相機。請改用手機的 Safari 或 Chrome 開啟。";
+    return;
+  }
+
+  if (!window.isSecureContext) {
+    overlay.classList.add("ar-error");
+    hint.textContent = "相機需要 HTTPS 網址才能開啟。請用 GitHub Pages 的 https:// 網址測試。";
+    return;
+  }
 
   try {
     arStream = await navigator.mediaDevices.getUserMedia({
@@ -363,9 +377,17 @@ async function openArExperience() {
     });
     video.srcObject = arStream;
   } catch {
-    overlay.classList.add("ar-error");
-    document.querySelector(".ar-hud span").textContent =
-      "相機沒有成功開啟。請確認使用 HTTPS 網址，並允許瀏覽器使用相機。";
+    try {
+      arStream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: false
+      });
+      video.srcObject = arStream;
+    } catch {
+      overlay.classList.add("ar-error");
+      hint.textContent =
+        "相機沒有成功開啟。請確認已允許相機權限，並使用 HTTPS 網址。";
+    }
   }
 }
 
