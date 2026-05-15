@@ -73,7 +73,7 @@ const levels = [
     choices: ["養海豚", "游泳比賽", "用來發電", "灌溉與洗衣"],
     answer: 3,
     explanation:
-      "答對了！赤蘭溪的水會經由溝渠引入稻田灌溉，婦女也會們合力到溪邊洗衣。早期農民甚至會自力救濟，抱石頭堆砌小水壩引支流灌溉，並開鑿埤塘儲存水源，這就是最真實的農村日常。",
+      "答對了！赤蘭溪的水會經由溝渠引入稻田灌溉。早期農民甚至會自力救濟，抱石頭堆砌小水壩引支流灌溉，並開鑿埤塘儲存水源，這就是最真實的農村日常。",
     explanationImage: "images/D3.jpg",
     explanationImageAlt: "洗衣示意圖"
   }
@@ -82,13 +82,20 @@ const levels = [
 const STORAGE_KEY = "questQuizProgress";
 const POINTS_PER_LEVEL = 2;
 const totalPoints = levels.length * POINTS_PER_LEVEL;
+const guardian = {
+  name: "赤靈",
+  image: "images/Chiling.png",
+  message: "跟著我走進赤蘭溪的故事。先找到地圖上的地點，再完成這一關的小挑戰吧！"
+};
 
 let state = loadState();
 let currentLevel = getFirstPlayableLevel();
 let answeredCorrectly = false;
+let hasStarted = false;
 
 const pointsEl = document.querySelector("#points");
 const totalPointsEl = document.querySelector("#totalPoints");
+const progressPanelEl = document.querySelector("#progressPanel");
 const levelListEl = document.querySelector("#levelList");
 const progressFillEl = document.querySelector("#progressFill");
 const gamePanelEl = document.querySelector("#gamePanel");
@@ -115,16 +122,20 @@ function saveState() {
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
+function getCompletedLevels() {
+  return state.completed.filter((levelIndex) => levelIndex < levels.length);
+}
+
 function getPoints() {
-  return state.completed.filter((levelIndex) => levelIndex < levels.length).length * POINTS_PER_LEVEL;
+  return getCompletedLevels().length * POINTS_PER_LEVEL;
 }
 
 function getFirstPlayableLevel() {
-  return Math.min(state.completed.length, levels.length - 1);
+  return Math.min(getCompletedLevels().length, levels.length - 1);
 }
 
 function canOpenLevel(index) {
-  return index <= state.completed.length;
+  return index <= getCompletedLevels().length;
 }
 
 function isCompleted(index) {
@@ -139,12 +150,67 @@ function render() {
   progressFillEl.style.width = `${(getPoints() / totalPoints) * 100}%`;
   renderLevelList();
 
+  if (!hasStarted) {
+    progressPanelEl.hidden = true;
+    renderCover();
+    return;
+  }
+
+  progressPanelEl.hidden = false;
   if (getPoints() >= totalPoints) {
     renderGift();
     return;
   }
 
   renderLevel();
+}
+
+function renderCover() {
+  gamePanelEl.innerHTML = `
+    <section class="cover">
+      <div class="cover-copy">
+        <p class="eyebrow">赤蘭溪走讀任務</p>
+        <h2>跟著赤靈，走進溪流與聚落的記憶</h2>
+        <p>這是一場需要實際走到地點的闖關遊戲。每一關會先給你地圖指引，抵達後閱讀故事、完成小測驗，就能獲得 2 點。</p>
+        <div class="cover-stats">
+          <span>${levels.length} 個關卡</span>
+          <span>每關 ${POINTS_PER_LEVEL} 點</span>
+          <span>集滿 ${totalPoints} 點領小禮物</span>
+        </div>
+        <div class="actions">
+          <button class="primary-btn" id="startButton" type="button">${getPoints() > 0 ? "繼續走讀" : "開始走讀"}</button>
+          ${
+            getPoints() > 0
+              ? `<button class="secondary-btn" id="coverResetButton" type="button">重新開始</button>`
+              : ""
+          }
+        </div>
+      </div>
+      <div class="cover-guardian">
+        <img src="${guardian.image}" alt="${guardian.name}" />
+        <h3>${guardian.name}</h3>
+        <p>${guardian.message}</p>
+      </div>
+    </section>
+  `;
+
+  document.querySelector("#startButton").addEventListener("click", () => {
+    hasStarted = true;
+    currentLevel = getFirstPlayableLevel();
+    answeredCorrectly = false;
+    render();
+  });
+
+  const resetButton = document.querySelector("#coverResetButton");
+  if (resetButton) {
+    resetButton.addEventListener("click", () => {
+      state = { completed: [] };
+      saveState();
+      currentLevel = 0;
+      answeredCorrectly = false;
+      render();
+    });
+  }
 }
 
 function renderLevelList() {
@@ -188,6 +254,7 @@ function renderLevel() {
       <span>關卡 ${currentLevel + 1} / ${levels.length}</span>
       <span class="badge">通關可得 ${POINTS_PER_LEVEL} 點</span>
     </div>
+    ${renderGuardian()}
     ${renderMapGuide(level)}
     <section class="intro">
       <h2>${level.title}</h2>
@@ -209,6 +276,19 @@ function renderLevel() {
     button.addEventListener("click", () => checkAnswer(index, button));
     choicesEl.appendChild(button);
   });
+}
+
+function renderGuardian() {
+  return `
+    <section class="guardian-panel">
+      <img class="guardian-image" src="${guardian.image}" alt="${guardian.name}" />
+      <div>
+        <span class="guardian-label">走讀守護靈</span>
+        <h2>${guardian.name}</h2>
+        <p>${guardian.message}</p>
+      </div>
+    </section>
+  `;
 }
 
 function renderMapGuide(level) {
