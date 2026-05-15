@@ -1,111 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>阿嬤的時光寶盒</title>
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>赤蘭溪闖關遊戲</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <section class="topbar" aria-label="遊戲狀態">
+        <div>
+          <p class="eyebrow">Quest Quiz</p>
+          <h1>赤蘭溪闖關遊戲</h1>
+        </div>
+        <div class="score-card">
+          <span>目前點數</span>
+          <strong id="points">0</strong>
+          <small>/ 10</small>
+        </div>
+      </section>
 
-<style>
-body {
-  margin: 0;
-  font-family: sans-serif;
-  background: #e5ddd5;
-}
+      <section class="progress-panel" aria-label="關卡進度">
+        <div id="levelList" class="level-list"></div>
+        <div class="progress-track">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+      </section>
 
-.chat {
-  max-width: 600px;
-  margin: auto;
-  padding: 15px;
-  padding-bottom: 120px;
-}
+      <section id="gamePanel" class="game-panel"></section>
+    </main>
 
-.msg {
-  padding: 10px 12px;
-  margin: 8px 0;
-  border-radius: 12px;
-  max-width: 75%;
-  display: inline-block;
-  clear: both;
-  line-height: 1.4;
-}
-
-.left {
-  background: white;
-  float: left;
-}
-
-.right {
-  background: #dcf8c6;
-  float: right;
-}
-
-.options {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: white;
-  padding: 10px;
-  display: flex;
-  gap: 10px;
-}
-
-button {
-  flex: 1;
-  padding: 12px;
-  border: none;
-  background: #4caf50;
-  color: white;
-  border-radius: 8px;
-  font-size: 14px;
-}
-</style>
-
-</head>
-
-<body>
-
-<div class="chat" id="chat">
-
-  <div class="msg left">🧺 阿嬤：旅人，你終於來了。這條溪，以前有很多故事…</div>
-  <div class="msg left">🐱 赤靈：這個地方的記憶正在消失。旅人，你能幫忙找找阿嬤的老物件，幫助阿嬤找回回憶嗎?</div>
-  <div class="msg left">📜 旁白：時光寶盒正在啟動。</div>
-
-</div>
-
-<div class="options">
-  <button onclick="choose(1)">我願意幫忙找回</button>
-  <button onclick="choose(2)">我想先聽耆老說故事</button>
-</div>
-
-<script>
-
-function addMsg(side, text){
-  document.getElementById("chat").innerHTML +=
-  `<div class="msg ${side}">${text}</div>`;
-  
-  window.scrollTo(0, document.body.scrollHeight);
-}
-
-function choose(option){
-
-  if(option === 1){
-    addMsg("right", "我願意幫忙找回");
-    
-    setTimeout(() => {
-      addMsg("left", "🐱 赤靈：很好，那我們出發吧。");
-    }, 600);
-  }
-
-  if(option === 2){
-    addMsg("right", "我想先聽耆老說故事");
-    
-    setTimeout(() => {
-      addMsg("left", "🧺 阿嬤：從前從前......");
-    }, 600);
-  }
-
-}
-
-</script>
-
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
