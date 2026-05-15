@@ -4,9 +4,9 @@ const levels = [
     locationName: "第一關地點：灣潭泗洲佛祖寺",
     mapText: "請依照地圖走到灣潭泗洲佛祖寺位置，抵達後再開始答題。",
     mapUrl: "https://maps.app.goo.gl/rvBHWmd5RJvpvcwA7",
-    mapImage: "images/灣潭泗洲佛祖寺.jpg",
+    mapImage: "images/A1.jpg",
     mapImageAlt: "第一關地圖指引",
-    image: "images/挑夫.jpg",
+    image: "images/A2.jpg",
     imageAlt: "",
     intro:
       "以前這條汗路只能靠雙腳走，大家挑著東西一走就是好幾公里。那時候，大家還要防土匪，所以在村子外種滿刺竹，像替家園穿上一層盔甲。",
@@ -15,49 +15,67 @@ const levels = [
     choices: ["木材與竹子", "大理石與花崗岩", "鋼筋與預拌混凝土", "強化玻璃與塑膠皮"],
     answer: 0,
     explanation:
-      "答對了！竹管厝是早年山區聚落常見的建築樣貌，通常就地取材，以竹子作為主要支撐，外覆泥土與稻草混合的牆體。",
-    explanationImage: "images/竹管厝.jpg",
+      "答對了！白河大地震後土塊厝全倒，村民便以竹子作為主要支撐，外覆泥土與稻草混合建成「竹管厝」，這體現了早期農村取材自然、互相扶持的強韌生命力。",
+    explanationImage: "images/A3.jpg",
     explanationImageAlt: "竹管厝示意圖"
   },
   {
-    title: "第二關：專注觀察",
+    title: "第二關：山谷的搬運手",
+    locationName: "第二關地點：灣潭仙姑娘廟",
+    mapText: "請依照地圖走到灣潭仙姑娘廟位置，抵達後再開始答題。",
+    mapUrl: "https://maps.app.goo.gl/o569xrMqmVxZZ96f9",
+    mapImage: "images/B1.jpg",
+    mapImageAlt: "第二關地圖指引",
+    image: "images/B2.jpg",
+    imageAlt: "",
     intro:
-      "有些答案藏在細節裡。遇到選項很像的題目時，慢下來觀察關鍵字，通常會比憑直覺更穩。",
-    question: "如果四個選項看起來都很像，最好怎麼做？",
-    choices: ["找題目中的關鍵字", "隨便點最快", "永遠選 A", "直接放棄"],
+      "以前沒有水泥橋，大家只能踩著石頭過溪，遇到大雨就只能靠吊橋或散竹橋。不過，過溪還不是最難的，最辛苦的，是把山上的寶貝運下來。以前山上有很多杉木，還有燒石灰用的石灰石，牛車根本上不去。於是聰明的長輩們，就在山谷間架起了一條神祕的「空中運輸線」。",
+    question:
+      "問題2：以前的人為了將山上的石灰石或厚重的杉木運送下山，最常利用哪一種工具來進行山間吊運？",
+    choices: ["牛車運輸", "流籠", "鐵牛仔", "手抬搬運"],
+    answer: 1,
+    explanation:
+      "答對了！當時的人會利用「流籠」將石灰石從山上吊運下山後運到石灰窯，或是運送珍貴的杉木。整個過程主要靠人力拉動，是早期山區非常重要的搬運方式。",
+    explanationImage: "images/B3.jpg",
+    explanationImageAlt: "流籠示意圖"
+  },
+  {
+    title: "第三關：金黃色傳家寶",
+    locationName: "第三關地點：鹽館菸樓",
+    mapText: "請依照地圖走到鹽館菸樓位置，抵達後再開始答題。",
+    mapUrl: "https://maps.app.goo.gl/MexWBeuYZTd1zUcN9",
+    mapImage: "images/C1.jpg",
+    mapImageAlt: "第三關地圖指引",
+    image: "images/C2.jpg",
+    imageAlt: "",
+    intro:
+      "以前為了生活，大家什麼苦工都做，有人上山砍竹子，泡進紙礐仔，撒上石灰做粗紙；有人去抽滿身是刺的黃藤，拖回來剖條、燻白換錢。那些石灰水流進溪裡，魚蝦暫時昏倒，小孩子就跑去撿魚撿蝦，幫家裡加菜。",
+    question: "問題3：以前鹽館村最有名的經濟支柱是什麼呢？",
+    choices: ["菸草", "檳榔", "稻米", "甘蔗"],
     answer: 0,
     explanation:
-      "答對了！關鍵字能幫你抓到題目的真正重點，尤其適合用在容易混淆的選項中。"
+      "答對了！以前鹽館村高達三分之二的收入都來自菸草。每年九月稻子收割後，大家就開始忙著種菸草。收成後，還要一葉一葉用菸針串起來，吊進菸樓裡慢慢烘，直到變成漂亮的黃褐色，再送往十字路的驗菸廠。這項產業在當年可是外銷出口的「綠色黃金」呢！",
+    explanationImage: "images/C3.jpg",
+    explanationImageAlt: "曬煙示意圖"
   },
   {
-    title: "第三關：錯了再試",
+    title: "第四關：流動的日常",
+    locationName: "第四關地點：鹽館晉南宮（王爺廟）",
+    mapText: "請依照地圖走到鹽館晉南宮（王爺廟）位置，抵達後再開始答題。",
+    mapUrl: "https://maps.app.goo.gl/P6aeaeEHGqZoAr4g7",
+    mapImage: "images/D1.jpg",
+    mapImageAlt: "第四關地圖指引",
+    image: "images/D2.jpg",
+    imageAlt: "",
     intro:
-      "答錯不是失敗，而是重新判斷的機會。這個遊戲會讓你再選一次，直到找出正確答案。",
-    question: "答錯時，這個遊戲會怎麼做？",
-    choices: ["直接結束遊戲", "扣掉所有點數", "請作答者重新選擇", "跳到禮物畫面"],
-    answer: 2,
-    explanation:
-      "答對了！答錯時會提醒重新選擇，讓作答者能從錯誤中修正，而不是立刻被淘汰。"
-  },
-  {
-    title: "第四關：公平集點",
-    intro:
-      "每一關通過後可以得到 2 點，但同一關只會給一次。這樣能避免重複刷點，也讓進度更公平。",
-    question: "為什麼同一關不能重複獲得點數？",
-    choices: ["讓遊戲更公平", "讓題目變少", "讓畫面變暗", "讓選項消失"],
-    answer: 0,
-    explanation:
-      "答對了！同一關只計分一次，可以確保點數代表真正完成的關卡進度。"
-  },
-  {
-    title: "第五關：完成挑戰",
-    intro:
-      "完成所有關卡後，總共可以集滿 10 點。集滿點數就代表你通過全部挑戰，可以領取小禮物。",
-    question: "5 個關卡全部完成後，總共會有幾點？",
-    choices: ["4 點", "6 點", "8 點", "10 點"],
+      "在自來水尚未普及的年代，溪流就是生活重心。婦女們合力到溪邊洗衣，以木板槌打、漂洗、日曬。當時家家戶戶都依賴赤蘭溪與其支流生活，從洗衣、取水到灌溉，溪水串起了村落的節奏與人情。",
+    question: "問題4：以前的村民會如何利用赤蘭溪與其支流的水呢？",
+    choices: ["養海豚", "游泳比賽", "用來發電", "灌溉與洗衣"],
     answer: 3,
     explanation:
-      "答對了！每關 2 點，5 關剛好是 10 點。恭喜你完成全部挑戰。"
+      "答對了！赤蘭溪的水會經由溝渠引入稻田灌溉，婦女也會們合力到溪邊洗衣。早期農民甚至會自力救濟，抱石頭堆砌小水壩引支流灌溉，並開鑿埤塘儲存水源，這就是最真實的農村日常。",
+    explanationImage: "images/D3.jpg",
+    explanationImageAlt: "洗衣示意圖"
   }
 ];
 
@@ -70,6 +88,7 @@ let currentLevel = getFirstPlayableLevel();
 let answeredCorrectly = false;
 
 const pointsEl = document.querySelector("#points");
+const totalPointsEl = document.querySelector("#totalPoints");
 const levelListEl = document.querySelector("#levelList");
 const progressFillEl = document.querySelector("#progressFill");
 const gamePanelEl = document.querySelector("#gamePanel");
@@ -97,7 +116,7 @@ function saveState() {
 }
 
 function getPoints() {
-  return state.completed.length * POINTS_PER_LEVEL;
+  return state.completed.filter((levelIndex) => levelIndex < levels.length).length * POINTS_PER_LEVEL;
 }
 
 function getFirstPlayableLevel() {
@@ -114,6 +133,9 @@ function isCompleted(index) {
 
 function render() {
   pointsEl.textContent = getPoints();
+  if (totalPointsEl) {
+    totalPointsEl.textContent = `/ ${totalPoints}`;
+  }
   progressFillEl.style.width = `${(getPoints() / totalPoints) * 100}%`;
   renderLevelList();
 
@@ -253,6 +275,9 @@ function checkAnswer(selectedIndex, selectedButton) {
   }
 
   pointsEl.textContent = getPoints();
+  if (totalPointsEl) {
+    totalPointsEl.textContent = `/ ${totalPoints}`;
+  }
   progressFillEl.style.width = `${(getPoints() / totalPoints) * 100}%`;
   renderLevelList();
 
@@ -278,7 +303,7 @@ function checkAnswer(selectedIndex, selectedButton) {
 function renderGift() {
   gamePanelEl.innerHTML = `
     <section class="gift">
-      <div class="gift-mark">10</div>
+      <div class="gift-mark">${totalPoints}</div>
       <h2>恭喜集滿點數！</h2>
       <p>你已完成全部 ${levels.length} 個關卡，總共獲得 ${totalPoints} 點。現在可以向活動人員出示這個畫面，領取你的小禮物。</p>
       <div class="actions">
