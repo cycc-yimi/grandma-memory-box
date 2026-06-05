@@ -330,11 +330,15 @@ function renderImage(src, alt) {
 function renderGuardianFeedback(type, imageSrc, message, detail = "", imageHtml = "") {
   return `
     <div class="guardian-feedback ${type}">
-      <img src="${imageSrc}" alt="${guardian.name}" />
-      <div>
+      <div class="guardian-feedback-avatar">
+        <img src="${imageSrc}" alt="${guardian.name}" />
+      </div>
+      <div class="guardian-feedback-text">
         <strong>${guardian.name}</strong>
         <p>${message}</p>
         ${detail ? `<p class="feedback-detail">${detail}</p>` : ""}
+      </div>
+      <div class="guardian-feedback-media">
         ${imageHtml}
       </div>
     </div>
