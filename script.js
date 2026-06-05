@@ -85,6 +85,10 @@ const totalPoints = levels.length * POINTS_PER_LEVEL;
 const guardian = {
   name: "赤靈",
   image: "images/Chiling-transparent.png",
+  welcomeImage: "images/Chiling-Welcome.png",
+  rightImage: "images/Chiling-Right.png",
+  tryAgainImage: "images/Chiling-Try Again.png",
+  finishImage: "images/Chiling-Finish.png",
   message: "跟著我走進赤蘭溪的故事。先找到地圖上的地點，再完成這一關的小挑戰吧！"
 };
 
@@ -188,7 +192,7 @@ function renderCover() {
         </div>
       </div>
       <div class="cover-guardian">
-        <img src="${guardian.image}" alt="${guardian.name}" />
+        <img src="${guardian.welcomeImage}" alt="${guardian.name} 歡迎圖" />
         <h3>${guardian.name}</h3>
         <p>${guardian.message}</p>
       </div>
@@ -323,6 +327,20 @@ function renderImage(src, alt) {
   return `<img class="level-image" src="${src}" alt="${alt || ""}" />`;
 }
 
+function renderGuardianFeedback(type, imageSrc, message, detail = "", imageHtml = "") {
+  return `
+    <div class="guardian-feedback ${type}">
+      <img src="${imageSrc}" alt="${guardian.name}" />
+      <div>
+        <strong>${guardian.name}</strong>
+        <p>${message}</p>
+        ${detail ? `<p class="feedback-detail">${detail}</p>` : ""}
+        ${imageHtml}
+      </div>
+    </div>
+  `;
+}
+
 function ensureArOverlay() {
   if (document.querySelector("#arOverlay")) {
     return;
@@ -426,17 +444,25 @@ function checkAnswer(selectedIndex, selectedButton) {
   if (selectedIndex !== level.answer) {
     selectedButton.classList.add("wrong");
     feedbackEl.className = "feedback error";
-    feedbackEl.textContent = "還不是正確答案，再想一下，請重新選擇！";
+    feedbackEl.innerHTML = renderGuardianFeedback(
+      "wrong",
+      guardian.tryAgainImage,
+      "再試一次！",
+      "這題還不是正確答案。赤靈陪你再想一下，重新選一個答案吧。"
+    );
     return;
   }
 
   answeredCorrectly = true;
   selectedButton.classList.add("correct");
   feedbackEl.className = "feedback success";
-  feedbackEl.innerHTML = `
-    <p>${level.explanation}</p>
-    ${renderImage(level.explanationImage, level.explanationImageAlt || "答對後的補充圖片")}
-  `;
+  feedbackEl.innerHTML = renderGuardianFeedback(
+    "correct",
+    guardian.rightImage,
+    "答對了！",
+    level.explanation,
+    renderImage(level.explanationImage, level.explanationImageAlt || "答對後的補充圖片")
+  );
 
   if (!isCompleted(currentLevel)) {
     state.completed.push(currentLevel);
@@ -472,6 +498,7 @@ function checkAnswer(selectedIndex, selectedButton) {
 function renderGift() {
   gamePanelEl.innerHTML = `
     <section class="gift">
+      <img class="gift-guardian" src="${guardian.finishImage}" alt="${guardian.name} 完成圖" />
       <div class="gift-mark">${totalPoints}</div>
       <h2>恭喜集滿點數！</h2>
       <p>你已完成全部 ${levels.length} 個關卡，總共獲得 ${totalPoints} 點。現在可以向活動人員出示這個畫面，領取你的小禮物。</p>

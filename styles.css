@@ -513,6 +513,48 @@ h1 {
   background: rgba(196, 73, 73, 0.1);
 }
 
+.guardian-feedback {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.guardian-feedback img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 14px rgba(38, 50, 56, 0.18));
+}
+
+.guardian-feedback strong {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--primary-dark);
+  font-size: 18px;
+}
+
+.guardian-feedback p {
+  margin: 0;
+}
+
+.guardian-feedback .feedback-detail {
+  margin-top: 6px;
+  color: #44545d;
+}
+
+.guardian-feedback .level-image {
+  max-height: 240px;
+}
+
+.guardian-feedback.wrong strong {
+  color: var(--danger);
+}
+
+.guardian-feedback.correct strong {
+  color: var(--success);
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;
@@ -551,6 +593,13 @@ h1 {
   place-items: center;
   min-height: 430px;
   text-align: center;
+}
+
+.gift-guardian {
+  width: min(52vw, 220px);
+  max-height: 220px;
+  object-fit: contain;
+  filter: drop-shadow(0 16px 22px rgba(38, 50, 56, 0.18));
 }
 
 .gift-mark {
@@ -629,6 +678,20 @@ h1 {
   .guardian-image {
     width: 64px;
     height: 64px;
+  }
+
+  .guardian-feedback {
+    grid-template-columns: 56px minmax(0, 1fr);
+  }
+
+  .guardian-feedback img {
+    width: 56px;
+    height: 56px;
+  }
+
+  .gift-guardian {
+    width: min(48vw, 170px);
+    max-height: 170px;
   }
 
   .ar-guardian {
