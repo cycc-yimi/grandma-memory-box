@@ -305,29 +305,44 @@ h1 {
   overflow: hidden;
 }
 
-.ar-video {
+.ar-model {
+  display: block;
   width: 100%;
   height: 100%;
   background: #101818;
-  object-fit: cover;
 }
 
-.ar-guardian {
+.ar-launch {
   position: absolute;
   left: 50%;
-  bottom: 18%;
-  width: min(46vw, 220px);
-  max-height: 36vh;
-  object-fit: contain;
+  bottom: 24px;
+  min-height: 50px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #392500;
+  font-weight: 900;
   transform: translateX(-50%);
-  filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.35));
-  pointer-events: none;
+  cursor: pointer;
+}
+
+.ar-loading {
+  position: absolute;
+  left: 50%;
+  bottom: 88px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  background: rgba(255, 253, 248, 0.88);
+  color: var(--ink);
+  font-weight: 700;
+  transform: translateX(-50%);
 }
 
 .ar-hud {
   position: absolute;
   left: 16px;
-  right: 16px;
+  right: 94px;
   top: 16px;
   padding: 14px 16px;
   border-radius: 8px;
@@ -349,7 +364,7 @@ h1 {
 .ar-close {
   position: absolute;
   right: 16px;
-  bottom: 18px;
+  top: 16px;
   min-height: 46px;
   padding: 0 18px;
   border: 0;
@@ -358,10 +373,6 @@ h1 {
   color: var(--ink);
   font-weight: 800;
   cursor: pointer;
-}
-
-.ar-error .ar-video {
-  opacity: 0.25;
 }
 
 .map-guide {
@@ -710,9 +721,16 @@ h1 {
     max-height: 170px;
   }
 
-  .ar-guardian {
-    width: min(42vw, 180px);
-    max-height: 32vh;
+  .ar-hud {
+    right: 84px;
+  }
+
+  .ar-hud span {
+    font-size: 14px;
+  }
+
+  .ar-launch {
+    width: min(76vw, 280px);
   }
 
   .game-panel {

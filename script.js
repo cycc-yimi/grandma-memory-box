@@ -89,6 +89,7 @@ const guardian = {
   rightImage: "images/Chiling-Right.png",
   tryAgainImage: "images/Chiling-Try Again.png",
   finishImage: "images/Chiling-Finish.png",
+  model: "models/Chiling.glb",
   message: "跟著我走進赤蘭溪的故事。先找到地圖上的地點，再完成這一關的小挑戰吧！"
 };
 
@@ -96,7 +97,6 @@ let state = loadState();
 let currentLevel = getFirstPlayableLevel();
 let answeredCorrectly = false;
 let hasStarted = false;
-let arStream = null;
 
 const pointsEl = document.querySelector("#points");
 const totalPointsEl = document.querySelector("#totalPoints");
@@ -355,11 +355,26 @@ function ensureArOverlay() {
     `
       <section class="ar-overlay" id="arOverlay" aria-hidden="true">
         <div class="ar-stage">
-          <video class="ar-video" id="arVideo" autoplay playsinline muted></video>
-          <img class="ar-guardian" src="${guardian.image}" alt="${guardian.name}" />
+          <model-viewer
+            class="ar-model"
+            src="${guardian.model}"
+            poster="${guardian.image}"
+            alt="${guardian.name} 3D 模型"
+            camera-controls
+            auto-rotate
+            shadow-intensity="1"
+            environment-image="neutral"
+            interaction-prompt="auto"
+            ar
+            ar-modes="webxr scene-viewer quick-look"
+            ar-placement="floor"
+          >
+            <button class="ar-launch" slot="ar-button" type="button">放到實際空間</button>
+            <div class="ar-loading" slot="progress-bar">3D 赤靈載入中...</div>
+          </model-viewer>
           <div class="ar-hud">
-            <strong>${guardian.name} 已出現</strong>
-            <span>移動手機，讓赤靈陪你一起走讀。</span>
+            <strong>${guardian.name} 3D 模型</strong>
+            <span>拖曳可旋轉查看；手機支援 AR 時，請按「放到實際空間」。</span>
           </div>
           <button class="ar-close" id="arCloseButton" type="button">關閉</button>
         </div>
@@ -370,64 +385,19 @@ function ensureArOverlay() {
   document.querySelector("#arCloseButton").addEventListener("click", closeArExperience);
 }
 
-async function openArExperience() {
+function openArExperience() {
   ensureArOverlay();
   const overlay = document.querySelector("#arOverlay");
-  const video = document.querySelector("#arVideo");
-  const hint = document.querySelector(".ar-hud span");
 
   overlay.classList.add("active");
   overlay.setAttribute("aria-hidden", "false");
-  overlay.classList.remove("ar-error");
-
-  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    overlay.classList.add("ar-error");
-    hint.textContent = "這個瀏覽器不支援直接開啟相機。請改用手機的 Safari 或 Chrome 開啟。";
-    return;
-  }
-
-  if (!window.isSecureContext) {
-    overlay.classList.add("ar-error");
-    hint.textContent = "相機需要 HTTPS 網址才能開啟。請用 GitHub Pages 的 https:// 網址測試。";
-    return;
-  }
-
-  try {
-    arStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: { ideal: "environment" } },
-      audio: false
-    });
-    video.srcObject = arStream;
-  } catch {
-    try {
-      arStream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: false
-      });
-      video.srcObject = arStream;
-    } catch {
-      overlay.classList.add("ar-error");
-      hint.textContent =
-        "相機沒有成功開啟。請確認已允許相機權限，並使用 HTTPS 網址。";
-    }
-  }
 }
 
 function closeArExperience() {
   const overlay = document.querySelector("#arOverlay");
-  const video = document.querySelector("#arVideo");
-
-  if (arStream) {
-    arStream.getTracks().forEach((track) => track.stop());
-    arStream = null;
-  }
-
-  if (video) {
-    video.srcObject = null;
-  }
 
   if (overlay) {
-    overlay.classList.remove("active", "ar-error");
+    overlay.classList.remove("active");
     overlay.setAttribute("aria-hidden", "true");
   }
 }
