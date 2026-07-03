@@ -117,6 +117,10 @@ function saveState() {
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
+function scrollToPageTop() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 function getCompletedLevels() {
   return state.completed.filter((levelIndex) => levelIndex < levels.length);
 }
@@ -165,7 +169,7 @@ function renderCover() {
     <section class="cover">
       <div class="cover-copy">
         <p class="eyebrow">赤蘭溪走讀任務</p>
-        <h2>跟著赤靈，走進溪流與聚落的記憶</h2>
+        <h2>走讀地方故事，蒐集流域記憶</h2>
         <p>這是一場需要實際走到地點的闖關遊戲。每一關會先給你地圖指引，抵達後閱讀故事、完成小測驗，就能獲得 2 點。</p>
         <div class="cover-stats">
           <span>${levels.length} 個關卡</span>
@@ -364,12 +368,14 @@ function checkAnswer(selectedIndex, selectedButton) {
   nextButton.addEventListener("click", () => {
     if (getPoints() >= totalPoints) {
       render();
+      scrollToPageTop();
       return;
     }
 
     currentLevel = getFirstPlayableLevel();
     answeredCorrectly = false;
     render();
+    scrollToPageTop();
   });
   actionEl.appendChild(nextButton);
 }
@@ -399,6 +405,8 @@ function renderGift() {
     saveState();
     currentLevel = 0;
     answeredCorrectly = false;
+    hasStarted = false;
     render();
+    scrollToPageTop();
   });
 }
