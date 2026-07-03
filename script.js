@@ -82,16 +82,6 @@ const levels = [
 const STORAGE_KEY = "questQuizProgress";
 const POINTS_PER_LEVEL = 2;
 const totalPoints = levels.length * POINTS_PER_LEVEL;
-const guardian = {
-  name: "赤靈",
-  image: "images/Chiling-transparent.png",
-  welcomeImage: "images/Chiling-Welcome.png",
-  rightImage: "images/Chiling-Right.png",
-  tryAgainImage: "images/Chiling-Try Again.png",
-  finishImage: "images/Chiling-Finish.png",
-  model: "models/Chiling.glb",
-  message: "跟著我走進赤蘭溪的故事。先找到地圖上的地點，再完成這一關的小挑戰吧！"
-};
 
 let state = loadState();
 let currentLevel = getFirstPlayableLevel();
@@ -191,11 +181,6 @@ function renderCover() {
           }
         </div>
       </div>
-      <div class="cover-guardian">
-        <img src="${guardian.welcomeImage}" alt="${guardian.name} 歡迎圖" />
-        <h3>${guardian.name}</h3>
-        <p>${guardian.message}</p>
-      </div>
     </section>
   `;
 
@@ -259,7 +244,6 @@ function renderLevel() {
       <span>關卡 ${currentLevel + 1} / ${levels.length}</span>
       <span class="badge">通關可得 ${POINTS_PER_LEVEL} 點</span>
     </div>
-    ${renderGuardian()}
     ${renderMapGuide(level)}
     <section class="intro">
       <h2>${level.title}</h2>
@@ -281,20 +265,6 @@ function renderLevel() {
     button.addEventListener("click", () => checkAnswer(index, button));
     choicesEl.appendChild(button);
   });
-}
-
-function renderGuardian() {
-  return `
-    <section class="guardian-panel">
-      <img class="guardian-image" src="${guardian.image}" alt="${guardian.name}" />
-      <div>
-        <span class="guardian-label">走讀守護靈</span>
-        <h2>${guardian.name}</h2>
-        <p>${guardian.message}</p>
-        <button class="secondary-btn ar-button" type="button" onclick="openArExperience()">召喚赤靈</button>
-      </div>
-    </section>
-  `;
 }
 
 function renderMapGuide(level) {
@@ -327,79 +297,16 @@ function renderImage(src, alt) {
   return `<img class="level-image" src="${src}" alt="${alt || ""}" />`;
 }
 
-function renderGuardianFeedback(type, imageSrc, message, detail = "", imageHtml = "") {
+function renderAnswerFeedback(type, message, detail = "", imageHtml = "") {
   return `
-    <div class="guardian-feedback ${type}">
-      <div class="guardian-feedback-avatar">
-        <img src="${imageSrc}" alt="${guardian.name}" />
-      </div>
-      <div class="guardian-feedback-text">
-        <strong>${guardian.name}</strong>
+    <div class="answer-feedback ${type}">
+      <div class="answer-feedback-text">
         <p>${message}</p>
         ${detail ? `<p class="feedback-detail">${detail}</p>` : ""}
       </div>
-      <div class="guardian-feedback-media">
-        ${imageHtml}
-      </div>
+      ${imageHtml ? `<div class="answer-feedback-media">${imageHtml}</div>` : ""}
     </div>
   `;
-}
-
-function ensureArOverlay() {
-  if (document.querySelector("#arOverlay")) {
-    return;
-  }
-
-  document.body.insertAdjacentHTML(
-    "beforeend",
-    `
-      <section class="ar-overlay" id="arOverlay" aria-hidden="true">
-        <div class="ar-stage">
-          <model-viewer
-            class="ar-model"
-            src="${guardian.model}"
-            poster="${guardian.image}"
-            alt="${guardian.name} 3D 模型"
-            camera-controls
-            auto-rotate
-            shadow-intensity="1"
-            environment-image="neutral"
-            interaction-prompt="auto"
-            ar
-            ar-modes="webxr scene-viewer quick-look"
-            ar-placement="floor"
-          >
-            <button class="ar-launch" slot="ar-button" type="button">放到實際空間</button>
-            <div class="ar-loading" slot="progress-bar">3D 赤靈載入中...</div>
-          </model-viewer>
-          <div class="ar-hud">
-            <strong>${guardian.name} 3D 模型</strong>
-            <span>拖曳可旋轉查看；手機支援 AR 時，請按「放到實際空間」。</span>
-          </div>
-          <button class="ar-close" id="arCloseButton" type="button">關閉</button>
-        </div>
-      </section>
-    `
-  );
-
-  document.querySelector("#arCloseButton").addEventListener("click", closeArExperience);
-}
-
-function openArExperience() {
-  ensureArOverlay();
-  const overlay = document.querySelector("#arOverlay");
-
-  overlay.classList.add("active");
-  overlay.setAttribute("aria-hidden", "false");
-}
-
-function closeArExperience() {
-  const overlay = document.querySelector("#arOverlay");
-
-  if (overlay) {
-    overlay.classList.remove("active");
-    overlay.setAttribute("aria-hidden", "true");
-  }
 }
 
 function checkAnswer(selectedIndex, selectedButton) {
@@ -418,11 +325,10 @@ function checkAnswer(selectedIndex, selectedButton) {
   if (selectedIndex !== level.answer) {
     selectedButton.classList.add("wrong");
     feedbackEl.className = "feedback error";
-    feedbackEl.innerHTML = renderGuardianFeedback(
+    feedbackEl.innerHTML = renderAnswerFeedback(
       "wrong",
-      guardian.tryAgainImage,
       "再試一次！",
-      "這題還不是正確答案。赤靈陪你再想一下，重新選一個答案吧。"
+      "這題還不是正確答案，再想一下並重新選擇。"
     );
     return;
   }
@@ -430,9 +336,8 @@ function checkAnswer(selectedIndex, selectedButton) {
   answeredCorrectly = true;
   selectedButton.classList.add("correct");
   feedbackEl.className = "feedback success";
-  feedbackEl.innerHTML = renderGuardianFeedback(
+  feedbackEl.innerHTML = renderAnswerFeedback(
     "correct",
-    guardian.rightImage,
     "答對了！",
     level.explanation,
     renderImage(level.explanationImage, level.explanationImageAlt || "答對後的補充圖片")
@@ -472,7 +377,6 @@ function checkAnswer(selectedIndex, selectedButton) {
 function renderGift() {
   gamePanelEl.innerHTML = `
     <section class="gift">
-      <img class="gift-guardian" src="${guardian.finishImage}" alt="${guardian.name} 完成圖" />
       <div class="gift-mark">${totalPoints}</div>
       <h2>恭喜集滿點數！</h2>
       <p>你已完成全部 ${levels.length} 個關卡，總共獲得 ${totalPoints} 點。現在可以向活動人員出示這個畫面，領取你的小禮物。</p>
