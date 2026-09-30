@@ -1,5 +1,7 @@
 const levels = [
   {
+    routeId: "DW-WT-001",
+    stopId: "WT-01",
     title: "第一關：重建的巧手",
     locationName: "第一關地點：灣潭泗洲佛祖寺",
     mapText: "請依照地圖走到灣潭泗洲佛祖寺位置，抵達後再開始答題。",
@@ -20,6 +22,8 @@ const levels = [
     explanationImageAlt: "竹管厝示意圖"
   },
   {
+    routeId: "DW-WT-001",
+    stopId: "WT-02",
     title: "第二關：山谷的搬運手",
     locationName: "第二關地點：灣潭仙姑娘廟",
     mapText: "請依照地圖走到灣潭仙姑娘廟位置，抵達後再開始答題。",
@@ -40,10 +44,15 @@ const levels = [
     explanationImageAlt: "流籠示意圖"
   },
   {
+    routeId: "DW-YG-001",
+    stopId: "YG-07",
     title: "第三關：金黃色傳家寶",
-    locationName: "第三關地點：鹽館菸樓",
-    mapText: "請依照地圖走到鹽館菸樓位置，抵達後再開始答題。",
-    mapUrl: "https://maps.app.goo.gl/MexWBeuYZTd1zUcN9",
+    locationName: "第三關地點：鹽館菸樓（晉南宮附近）",
+    mapText:
+      "地圖提供晉南宮附近的鄰近定位。菸樓位於晉南宮外十字路口附近，請由公共巷道外部觀看，不可進入建物；導航不會直接帶到菸樓入口。",
+    // Navigation follows the public-safe YG-07 data in yimi-story.
+    mapUrl: "https://maps.app.goo.gl/psfGZZFDLCFf7Rkb6",
+    mapButtonText: "導航至晉南宮附近",
     mapImage: "images/C1.jpg",
     mapImageAlt: "第三關地圖指引",
     image: "images/C2.jpg",
@@ -59,9 +68,12 @@ const levels = [
     explanationImageAlt: "曬煙示意圖"
   },
   {
+    routeId: "DW-YG-001",
+    stopId: "YG-05",
+    relatedStopIds: ["YG-06"],
     title: "第四關：流動的日常",
-    locationName: "第四關地點：鹽館晉南宮（王爺廟）",
-    mapText: "請依照地圖走到鹽館晉南宮（王爺廟）位置，抵達後再開始答題。",
+    locationName: "第四關地點：鹽館晉南宮",
+    mapText: "請依照地圖走到鹽館晉南宮，並從鄰近的晉南宮旁洗衣池延伸認識聚落用水記憶。",
     mapUrl: "https://maps.app.goo.gl/P6aeaeEHGqZoAr4g7",
     mapImage: "images/D1.jpg",
     mapImageAlt: "第四關地圖指引",
@@ -82,6 +94,23 @@ const levels = [
 const STORAGE_KEY = "questQuizProgress";
 const POINTS_PER_LEVEL = 2;
 const totalPoints = levels.length * POINTS_PER_LEVEL;
+const DIGITAL_WALK_BASE_URL = "https://yimi-tian.github.io/yimi-story/index.html#/digital";
+
+function getDigitalWalkUrl(level) {
+  return `${DIGITAL_WALK_BASE_URL}/${encodeURIComponent(level.routeId)}/${encodeURIComponent(level.stopId)}`;
+}
+
+function renderDigitalWalkLink(level) {
+  if (!level.routeId || !level.stopId) {
+    return "";
+  }
+
+  return `
+    <div class="actions">
+      <a class="map-link" href="${getDigitalWalkUrl(level)}" target="_blank" rel="noopener noreferrer">查看這一站的完整數位走讀</a>
+    </div>
+  `;
+}
 
 let state = loadState();
 let currentLevel = getFirstPlayableLevel();
@@ -286,7 +315,7 @@ function renderMapGuide(level) {
       ${renderImage(level.mapImage, level.mapImageAlt || "關卡地圖指引")}
       ${
         level.mapUrl
-          ? `<a class="map-link" href="${level.mapUrl}" target="_blank" rel="noopener">開啟地圖</a>`
+          ? `<a class="map-link" href="${level.mapUrl}" target="_blank" rel="noopener">${level.mapButtonText || "開啟地圖"}</a>`
           : ""
       }
     </section>
@@ -301,12 +330,13 @@ function renderImage(src, alt) {
   return `<img class="level-image" src="${src}" alt="${alt || ""}" />`;
 }
 
-function renderAnswerFeedback(type, message, detail = "", imageHtml = "") {
+function renderAnswerFeedback(type, message, detail = "", imageHtml = "", actionHtml = "") {
   return `
     <div class="answer-feedback ${type}">
       <div class="answer-feedback-text">
         <p>${message}</p>
         ${detail ? `<p class="feedback-detail">${detail}</p>` : ""}
+        ${actionHtml}
       </div>
       ${imageHtml ? `<div class="answer-feedback-media">${imageHtml}</div>` : ""}
     </div>
@@ -344,7 +374,8 @@ function checkAnswer(selectedIndex, selectedButton) {
     "correct",
     "答對了！",
     level.explanation,
-    renderImage(level.explanationImage, level.explanationImageAlt || "答對後的補充圖片")
+    renderImage(level.explanationImage, level.explanationImageAlt || "答對後的補充圖片"),
+    renderDigitalWalkLink(level)
   );
 
   if (!isCompleted(currentLevel)) {
@@ -386,6 +417,7 @@ function renderGift() {
       <div class="gift-mark">${totalPoints}</div>
       <h2>恭喜集滿點數！</h2>
       <p>你已完成全部 ${levels.length} 個關卡，總共獲得 ${totalPoints} 點。現在可以向活動人員出示這個畫面，領取你的小禮物。</p>
+      <p>此畫面為闖關完成紀錄，實際領取方式依現場工作人員核對為準。</p>
       <div class="actions">
         <button class="secondary-btn" id="reviewButton" type="button">回顧關卡</button>
         <button class="secondary-btn" id="resetButton" type="button">重新開始</button>
